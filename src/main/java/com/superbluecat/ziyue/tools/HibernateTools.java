@@ -2,11 +2,12 @@ package com.superbluecat.ziyue.tools;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.annotation.Resource;
 
 public class HibernateTools {
 
-    @Autowired
+    @Resource
     private SessionFactory sessionFactory;
 
     public void setSessionFactory(SessionFactory sessionFactory) {
