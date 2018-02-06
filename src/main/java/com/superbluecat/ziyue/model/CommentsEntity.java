@@ -14,6 +14,7 @@ public class CommentsEntity {
     private String ua;
     private Timestamp time;
     private int userId;
+    private Integer toCommentId;
 
     @Id
     @Column(name = "CommentId")
@@ -95,6 +96,16 @@ public class CommentsEntity {
         this.userId = userId;
     }
 
+    @Basic
+    @Column(name = "ToCommentId")
+    public Integer getToCommentId() {
+        return toCommentId;
+    }
+
+    public void setToCommentId(Integer toCommentId) {
+        this.toCommentId = toCommentId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -110,6 +121,7 @@ public class CommentsEntity {
         if (comment != null ? !comment.equals(that.comment) : that.comment != null) return false;
         if (ua != null ? !ua.equals(that.ua) : that.ua != null) return false;
         if (time != null ? !time.equals(that.time) : that.time != null) return false;
+        if (toCommentId != null ? !toCommentId.equals(that.toCommentId) : that.toCommentId != null) return false;
 
         return true;
     }
@@ -124,6 +136,7 @@ public class CommentsEntity {
         result = 31 * result + (ua != null ? ua.hashCode() : 0);
         result = 31 * result + (time != null ? time.hashCode() : 0);
         result = 31 * result + userId;
+        result = 31 * result + (toCommentId != null ? toCommentId.hashCode() : 0);
         return result;
     }
 }
