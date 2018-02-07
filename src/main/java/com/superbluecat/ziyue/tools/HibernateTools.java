@@ -5,16 +5,15 @@ import org.hibernate.SessionFactory;
 
 import javax.annotation.Resource;
 
+/**
+ * @author zjh
+ */
 public class HibernateTools {
 
     @Resource
     private SessionFactory sessionFactory;
 
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
-
-    public Session getSession() {
+    protected Session getSession() {
         return this.sessionFactory.getCurrentSession();
     }
 }

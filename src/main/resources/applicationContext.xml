@@ -33,14 +33,6 @@
                 <prop key="hibernate.connection.driver_class">com.mysql.jdbc.Driver</prop>
             </props>
         </property>
-        <property name="mappingLocations">
-            <list>
-                <value>classpath:com/superbluecat/ziyue/model/CommentsEntity.hbm.xml</value>
-                <value>classpath:com/superbluecat/ziyue/model/ThemeEntity.hbm.xml</value>
-                <value>classpath:com/superbluecat/ziyue/model/UserThemeEntity.hbm.xml</value>
-                <value>classpath:com/superbluecat/ziyue/model/UsersEntity.hbm.xml</value>
-            </list>
-        </property>
     </bean>
 
     <bean id="transactionManager"

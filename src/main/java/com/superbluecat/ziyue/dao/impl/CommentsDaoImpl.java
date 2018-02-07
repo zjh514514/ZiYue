@@ -7,6 +7,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * @author zjh
+ */
 @Repository
 public class CommentsDaoImpl extends HibernateTools implements CommentsDao {
 
@@ -27,5 +30,10 @@ public class CommentsDaoImpl extends HibernateTools implements CommentsDao {
     public List get(Integer userId) {
         hql = "FROM CommentsEntity c WHERE c.userId = ?";
         return getSession().createQuery(hql).setParameter(0, userId).list();
+    }
+
+    public CommentsEntity getOne(Integer id) {
+        hql = "FROM CommentsEntity c WHERE c.commentId = ?";
+        return (CommentsEntity) getSession().createQuery(hql).setParameter(0, id).getSingleResult();
     }
 }
