@@ -1,7 +1,8 @@
-package com.superbluecat.ziyue.model;
+package com.superbluecat.ziyue.entities;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Collection;
 
 @Entity
 @Table(name = "users", schema = "zy", catalog = "")
@@ -11,12 +12,14 @@ public class UsersEntity {
     private String password;
     private String nickname;
     private String email;
-    private Integer tel;
+    private String tel;
     private String apiKey;
     private byte userType;
     private byte isMonth;
     private Timestamp payTime;
     private Integer commentsLeft;
+    private Collection<CommentsEntity> commentsByUserId;
+    private Collection<UserThemeEntity> userThemesByUserId;
 
     @Id
     @Column(name = "UserId")
@@ -70,11 +73,11 @@ public class UsersEntity {
 
     @Basic
     @Column(name = "Tel")
-    public Integer getTel() {
+    public String getTel() {
         return tel;
     }
 
-    public void setTel(Integer tel) {
+    public void setTel(String tel) {
         this.tel = tel;
     }
 
@@ -164,5 +167,23 @@ public class UsersEntity {
         result = 31 * result + (payTime != null ? payTime.hashCode() : 0);
         result = 31 * result + (commentsLeft != null ? commentsLeft.hashCode() : 0);
         return result;
+    }
+
+    @OneToMany(mappedBy = "usersByUserId")
+    public Collection<CommentsEntity> getCommentsByUserId() {
+        return commentsByUserId;
+    }
+
+    public void setCommentsByUserId(Collection<CommentsEntity> commentsByUserId) {
+        this.commentsByUserId = commentsByUserId;
+    }
+
+    @OneToMany(mappedBy = "usersByUserId")
+    public Collection<UserThemeEntity> getUserThemesByUserId() {
+        return userThemesByUserId;
+    }
+
+    public void setUserThemesByUserId(Collection<UserThemeEntity> userThemesByUserId) {
+        this.userThemesByUserId = userThemesByUserId;
     }
 }

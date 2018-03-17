@@ -1,6 +1,6 @@
 package com.superbluecat.ziyue.dao;
 
-import com.superbluecat.ziyue.model.UsersEntity;
+import com.superbluecat.ziyue.entities.UsersEntity;
 
 /**
  * @author zjh

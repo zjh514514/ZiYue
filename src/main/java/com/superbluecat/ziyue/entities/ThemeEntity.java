@@ -1,6 +1,7 @@
-package com.superbluecat.ziyue.model;
+package com.superbluecat.ziyue.entities;
 
 import javax.persistence.*;
+import java.util.Collection;
 
 @Entity
 @Table(name = "theme", schema = "zy", catalog = "")
@@ -8,6 +9,7 @@ public class ThemeEntity {
     private int themeId;
     private String themename;
     private double money;
+    private Collection<UserThemeEntity> userThemesByThemeId;
 
     @Id
     @Column(name = "ThemeId")
@@ -62,5 +64,14 @@ public class ThemeEntity {
         temp = Double.doubleToLongBits(money);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
+    }
+
+    @OneToMany(mappedBy = "themeByThemeId")
+    public Collection<UserThemeEntity> getUserThemesByThemeId() {
+        return userThemesByThemeId;
+    }
+
+    public void setUserThemesByThemeId(Collection<UserThemeEntity> userThemesByThemeId) {
+        this.userThemesByThemeId = userThemesByThemeId;
     }
 }

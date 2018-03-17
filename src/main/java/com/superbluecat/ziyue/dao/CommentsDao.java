@@ -1,6 +1,6 @@
 package com.superbluecat.ziyue.dao;
 
-import com.superbluecat.ziyue.model.CommentsEntity;
+import com.superbluecat.ziyue.entities.CommentsEntity;
 
 import java.util.List;
 

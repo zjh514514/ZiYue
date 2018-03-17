@@ -1,4 +1,4 @@
-package com.superbluecat.ziyue.model;
+package com.superbluecat.ziyue.entities;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -15,6 +15,7 @@ public class CommentsEntity {
     private Timestamp time;
     private int userId;
     private Integer toCommentId;
+    private UsersEntity usersByUserId;
 
     @Id
     @Column(name = "CommentId")
@@ -138,5 +139,15 @@ public class CommentsEntity {
         result = 31 * result + userId;
         result = 31 * result + (toCommentId != null ? toCommentId.hashCode() : 0);
         return result;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "UserId", referencedColumnName = "UserId", nullable = false, updatable = false, insertable = false)
+    public UsersEntity getUsersByUserId() {
+        return usersByUserId;
+    }
+
+    public void setUsersByUserId(UsersEntity usersByUserId) {
+        this.usersByUserId = usersByUserId;
     }
 }
