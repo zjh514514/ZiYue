@@ -13,8 +13,8 @@ public class PackagesDaoImpl extends HibernateTools implements PackagesDao {
     private String hql;
 
     @Override
-    public void add(PackagesEntity packagesEntity) {
-        getSession().save(packagesEntity);
+    public Integer save(PackagesEntity packagesEntity) {
+        return (Integer) getSession().save(packagesEntity);
     }
 
     @Override
@@ -28,12 +28,19 @@ public class PackagesDaoImpl extends HibernateTools implements PackagesDao {
     }
 
     @Override
-    public List getAll(Integer... type) {
-        if (type != null) {
-            hql = "FROM PackagesEntity";
+    public PackagesEntity getOne(Integer id) {
+        hql = "FROM PackagesEntity p WHERE p.id = ?";
+        List list = getSession().createQuery(hql).setParameter(0, id).list();
+        if (list.size() > 0) {
+            return (PackagesEntity) list.get(0);
         } else {
-            hql = "FROM PackagesEntity p WHERE p.type = ?";
+            return null;
         }
-        return getSession().createQuery(hql).setParameter(0, type).list();
+    }
+
+    @Override
+    public List getAll() {
+        hql = "FROM PackagesEntity";
+        return getSession().createQuery(hql).list();
     }
 }

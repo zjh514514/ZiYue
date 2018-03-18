@@ -4,17 +4,9 @@ import com.superbluecat.ziyue.entities.CommentsEntity;
 
 import java.util.List;
 
-/**
- * @author zjh
- */
 public interface CommentsDao {
 
-    /**
-     * 保存一条评论
-     *
-     * @param commentsEntity:保存的实体类
-     */
-    void save(CommentsEntity commentsEntity);
+    Integer save(CommentsEntity commentsEntity);
 
     void delete(Integer id);
 

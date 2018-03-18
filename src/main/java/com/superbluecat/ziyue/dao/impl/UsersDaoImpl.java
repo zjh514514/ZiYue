@@ -16,8 +16,8 @@ public class UsersDaoImpl extends HibernateTools implements UsersDao {
     private String hql;
 
     @Override
-    public void add(UsersEntity usersEntity) {
-        getSession().save(usersEntity);
+    public Integer save(UsersEntity usersEntity) {
+        return (Integer) getSession().save(usersEntity);
     }
 
     @Override

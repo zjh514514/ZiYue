@@ -2,12 +2,9 @@ package com.superbluecat.ziyue.dao;
 
 import com.superbluecat.ziyue.entities.UsersEntity;
 
-/**
- * @author zjh
- */
 public interface UsersDao {
 
-    void add(UsersEntity usersEntity);
+    Integer save(UsersEntity usersEntity);
 
     void delete(Integer id);
 

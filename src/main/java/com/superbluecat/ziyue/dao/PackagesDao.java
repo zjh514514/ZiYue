@@ -6,11 +6,13 @@ import java.util.List;
 
 public interface PackagesDao {
 
-    void add(PackagesEntity packagesEntity);
+    Integer save(PackagesEntity packagesEntity);
 
     void delete(Integer id);
 
     void update(PackagesEntity packagesEntity);
 
-    List getAll(Integer... type);
+    PackagesEntity getOne(Integer id);
+
+    List getAll();
 }

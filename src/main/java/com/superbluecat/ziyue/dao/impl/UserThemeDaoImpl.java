@@ -13,8 +13,8 @@ public class UserThemeDaoImpl extends HibernateTools implements UserThemeDao {
     private String hql;
 
     @Override
-    public void add(UserThemeEntity userThemeEntity) {
-        getSession().save(userThemeEntity);
+    public Integer save(UserThemeEntity userThemeEntity) {
+        return (Integer) getSession().save(userThemeEntity);
     }
 
     @Override

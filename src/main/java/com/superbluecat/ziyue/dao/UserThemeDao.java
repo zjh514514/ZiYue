@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface UserThemeDao {
 
-    void add(UserThemeEntity userThemeEntity);
+    Integer save(UserThemeEntity userThemeEntity);
 
     void update(UserThemeEntity userThemeEntity);
 

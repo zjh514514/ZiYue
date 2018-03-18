@@ -8,7 +8,6 @@ import com.superbluecat.ziyue.tools.HibernateTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -24,7 +23,7 @@ public class PackagesServiceImpl extends HibernateTools implements PackagesServi
     }
 
     @Override
-    public Boolean add(String name, Integer money, byte type, Integer monNumber, Integer comNumber, String apiKey) {
+    public Boolean save(String name, Integer money, byte type, Integer monNumber, Integer comNumber, String apiKey) {
         if (usersDao.get(apiKey).getUserType() == 1) {
             return false;
         }
@@ -34,22 +33,32 @@ public class PackagesServiceImpl extends HibernateTools implements PackagesServi
         packagesEntity.setMonNumber(monNumber);
         packagesEntity.setName(name);
         packagesEntity.setType(type);
-        packagesDao.add(packagesEntity);
-        return true;
+        return packagesDao.save(packagesEntity) > 0;
     }
 
     @Override
     public Boolean delete(Integer id, String apiKey) {
+        if (usersDao.get(apiKey).getUserType() == 1) {
+            return false;
+        }
         return null;
     }
 
     @Override
     public Boolean update(Integer id, String name, Integer money, Integer monNumber, Integer comNumber, String apiKey) {
+        if (usersDao.get(apiKey).getUserType() == 1) {
+            return false;
+        }
+        PackagesEntity packagesEntity = packagesDao.getOne(id);
+        packagesEntity.setComNumber(comNumber);
+        packagesEntity.setMoney(money);
+        packagesEntity.setMonNumber(monNumber);
+        packagesEntity.setName(name);
         return null;
     }
 
     @Override
-    public List getAll() {
-        return Collections.emptyList();
+    public List getAll(Integer type) {
+        return packagesDao.getAll();
     }
 }

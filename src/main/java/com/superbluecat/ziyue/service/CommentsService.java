@@ -2,12 +2,9 @@ package com.superbluecat.ziyue.service;
 
 import java.util.List;
 
-/**
- * @author zjh
- */
 public interface CommentsService {
 
-    Boolean add(String apiKey, String comment, String email, String nickName, Integer toCommentId, String ua, String website);
+    Boolean save(String apiKey, String comment, String email, String nickName, Integer toCommentId, String ua, String website);
 
     Boolean delete(String apiKey, Integer id);
 

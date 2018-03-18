@@ -14,9 +14,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-/**
- * @author zjh
- */
 @Service
 public class CommentsServiceImpl extends HibernateTools implements CommentsService {
 
@@ -30,7 +27,7 @@ public class CommentsServiceImpl extends HibernateTools implements CommentsServi
     }
 
     @Override
-    public Boolean add(String apiKey, String comment, String email, String nickName, Integer toCommentId, String ua, String website) {
+    public Boolean save(String apiKey, String comment, String email, String nickName, Integer toCommentId, String ua, String website) {
         UsersEntity usersEntity = usersDao.get(apiKey);
         Date date = new Date();
         boolean judge = (usersEntity == null) || (usersEntity.getIsMonth() == 1 && usersEntity.getPayTime().compareTo(date) < 0) || (usersEntity.getIsMonth() == 0 && usersEntity.getCommentsLeft() < 0);
@@ -50,8 +47,7 @@ public class CommentsServiceImpl extends HibernateTools implements CommentsServi
             usersEntity.setCommentsLeft(usersEntity.getCommentsLeft() - 1);
             usersDao.update(usersEntity);
         }
-        commentsDao.save(commentsEntity);
-        return true;
+        return commentsDao.save(commentsEntity) > 0;
     }
 
     @Override

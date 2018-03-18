@@ -16,8 +16,8 @@ public class CommentsDaoImpl extends HibernateTools implements CommentsDao {
     private String hql;
 
     @Override
-    public void save(CommentsEntity commentsEntity) {
-        getSession().save(commentsEntity);
+    public Integer save(CommentsEntity commentsEntity) {
+        return (Integer) getSession().save(commentsEntity);
     }
 
     @Override
