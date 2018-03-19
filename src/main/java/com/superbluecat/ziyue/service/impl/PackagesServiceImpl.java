@@ -41,7 +41,8 @@ public class PackagesServiceImpl extends HibernateTools implements PackagesServi
         if (usersDao.get(apiKey).getUserType() == 1) {
             return false;
         }
-        return null;
+        packagesDao.delete(id);
+        return true;
     }
 
     @Override
@@ -50,11 +51,9 @@ public class PackagesServiceImpl extends HibernateTools implements PackagesServi
             return false;
         }
         PackagesEntity packagesEntity = packagesDao.getOne(id);
-        packagesEntity.setComNumber(comNumber);
         packagesEntity.setMoney(money);
-        packagesEntity.setMonNumber(monNumber);
-        packagesEntity.setName(name);
-        return null;
+        packagesDao.update(packagesEntity);
+        return true;
     }
 
     @Override
