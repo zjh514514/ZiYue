@@ -32,4 +32,10 @@ public class UserThemeDaoImpl extends HibernateTools implements UserThemeDao {
         hql = "FROM UserThemeEntity u WHERE u.userId = ?";
         return getSession().createQuery(hql).setParameter(0, userId).list();
     }
+
+    @Override
+    public void setIsUse(Integer userId, byte isUse) {
+        hql = "UPDATE UserThemeEntity u SET u.isUse = ? WHERE u.userId = ?";
+        getSession().createQuery(hql).setParameter(0, userId).setParameter(1, isUse).executeUpdate();
+    }
 }

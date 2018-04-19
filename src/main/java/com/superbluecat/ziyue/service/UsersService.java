@@ -1,15 +1,20 @@
 package com.superbluecat.ziyue.service;
 
-import java.util.Date;
-import java.util.List;
+import com.superbluecat.ziyue.entities.UsersEntity;
 
 public interface UsersService {
 
-    Boolean save(String username, String password, String nickname, String email, String tel, String apiKey, byte userType, byte isMonth, Date payTime, Integer commentsLeft);
+    Integer userNum(String username);
 
-    Boolean delete(Integer id);
+    UsersEntity save(String username, String password, String nickname, String email, String tel);
 
-    Boolean update(String username, String password, String nickname, String email, String tel, String apiKey, byte userType, byte isMonth, Date payTime, Integer commentsLeft);
+    Boolean delete(String username, String password, String apiKey, Integer id);
 
-    List get(String username, String password, String apiKey);
+    Boolean update(String username, String password, String nickname, String email, String tel, String apiKey);
+
+    UsersEntity get(String username, String password, String apiKey);
+
+    Boolean buyPackages(String username, String password, String apiKey, Integer id);
+
+    Boolean buyThemes(String username, String password, String apiKey, Integer id);
 }

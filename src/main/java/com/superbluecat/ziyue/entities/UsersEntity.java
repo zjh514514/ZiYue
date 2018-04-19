@@ -2,7 +2,7 @@ package com.superbluecat.ziyue.entities;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.Collection;
+import java.util.Objects;
 
 @Entity
 @Table(name = "users", schema = "zy", catalog = "")
@@ -18,8 +18,7 @@ public class UsersEntity {
     private byte isMonth;
     private Timestamp payTime;
     private Integer commentsLeft;
-    private Collection<CommentsEntity> commentsByUserId;
-    private Collection<UserThemeEntity> userThemesByUserId;
+    private Integer monthLeft;
 
     @Id
     @Column(name = "UserId")
@@ -102,7 +101,7 @@ public class UsersEntity {
     }
 
     @Basic
-    @Column(name = "isMonth")
+    @Column(name = "IsMonth")
     public byte getIsMonth() {
         return isMonth;
     }
@@ -131,59 +130,38 @@ public class UsersEntity {
         this.commentsLeft = commentsLeft;
     }
 
+    @Basic
+    @Column(name = "MonthLeft")
+    public Integer getMonthLeft() {
+        return monthLeft;
+    }
+
+    public void setMonthLeft(Integer monthLeft) {
+        this.monthLeft = monthLeft;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         UsersEntity that = (UsersEntity) o;
-
-        if (userId != that.userId) return false;
-        if (userType != that.userType) return false;
-        if (isMonth != that.isMonth) return false;
-        if (username != null ? !username.equals(that.username) : that.username != null) return false;
-        if (password != null ? !password.equals(that.password) : that.password != null) return false;
-        if (nickname != null ? !nickname.equals(that.nickname) : that.nickname != null) return false;
-        if (email != null ? !email.equals(that.email) : that.email != null) return false;
-        if (tel != null ? !tel.equals(that.tel) : that.tel != null) return false;
-        if (apiKey != null ? !apiKey.equals(that.apiKey) : that.apiKey != null) return false;
-        if (payTime != null ? !payTime.equals(that.payTime) : that.payTime != null) return false;
-        if (commentsLeft != null ? !commentsLeft.equals(that.commentsLeft) : that.commentsLeft != null) return false;
-
-        return true;
+        return userId == that.userId &&
+                userType == that.userType &&
+                isMonth == that.isMonth &&
+                Objects.equals(username, that.username) &&
+                Objects.equals(password, that.password) &&
+                Objects.equals(nickname, that.nickname) &&
+                Objects.equals(email, that.email) &&
+                Objects.equals(tel, that.tel) &&
+                Objects.equals(apiKey, that.apiKey) &&
+                Objects.equals(payTime, that.payTime) &&
+                Objects.equals(commentsLeft, that.commentsLeft) &&
+                Objects.equals(monthLeft, that.monthLeft);
     }
 
     @Override
     public int hashCode() {
-        int result = userId;
-        result = 31 * result + (username != null ? username.hashCode() : 0);
-        result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + (nickname != null ? nickname.hashCode() : 0);
-        result = 31 * result + (email != null ? email.hashCode() : 0);
-        result = 31 * result + (tel != null ? tel.hashCode() : 0);
-        result = 31 * result + (apiKey != null ? apiKey.hashCode() : 0);
-        result = 31 * result + (int) userType;
-        result = 31 * result + (int) isMonth;
-        result = 31 * result + (payTime != null ? payTime.hashCode() : 0);
-        result = 31 * result + (commentsLeft != null ? commentsLeft.hashCode() : 0);
-        return result;
-    }
 
-    @OneToMany(mappedBy = "usersByUserId")
-    public Collection<CommentsEntity> getCommentsByUserId() {
-        return commentsByUserId;
-    }
-
-    public void setCommentsByUserId(Collection<CommentsEntity> commentsByUserId) {
-        this.commentsByUserId = commentsByUserId;
-    }
-
-    @OneToMany(mappedBy = "usersByUserId")
-    public Collection<UserThemeEntity> getUserThemesByUserId() {
-        return userThemesByUserId;
-    }
-
-    public void setUserThemesByUserId(Collection<UserThemeEntity> userThemesByUserId) {
-        this.userThemesByUserId = userThemesByUserId;
+        return Objects.hash(userId, username, password, nickname, email, tel, apiKey, userType, isMonth, payTime, commentsLeft, monthLeft);
     }
 }

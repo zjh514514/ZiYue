@@ -2,6 +2,7 @@ package com.superbluecat.ziyue.entities;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Objects;
 
 @Entity
 @Table(name = "comments", schema = "zy", catalog = "")
@@ -15,7 +16,6 @@ public class CommentsEntity {
     private Timestamp time;
     private int userId;
     private Integer toCommentId;
-    private UsersEntity usersByUserId;
 
     @Id
     @Column(name = "CommentId")
@@ -111,43 +111,19 @@ public class CommentsEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         CommentsEntity that = (CommentsEntity) o;
-
-        if (commentId != that.commentId) return false;
-        if (userId != that.userId) return false;
-        if (nickname != null ? !nickname.equals(that.nickname) : that.nickname != null) return false;
-        if (email != null ? !email.equals(that.email) : that.email != null) return false;
-        if (website != null ? !website.equals(that.website) : that.website != null) return false;
-        if (comment != null ? !comment.equals(that.comment) : that.comment != null) return false;
-        if (ua != null ? !ua.equals(that.ua) : that.ua != null) return false;
-        if (time != null ? !time.equals(that.time) : that.time != null) return false;
-        if (toCommentId != null ? !toCommentId.equals(that.toCommentId) : that.toCommentId != null) return false;
-
-        return true;
+        return commentId == that.commentId &&
+                Objects.equals(nickname, that.nickname) &&
+                Objects.equals(email, that.email) &&
+                Objects.equals(website, that.website) &&
+                Objects.equals(comment, that.comment) &&
+                Objects.equals(ua, that.ua) &&
+                Objects.equals(time, that.time);
     }
 
     @Override
     public int hashCode() {
-        int result = commentId;
-        result = 31 * result + (nickname != null ? nickname.hashCode() : 0);
-        result = 31 * result + (email != null ? email.hashCode() : 0);
-        result = 31 * result + (website != null ? website.hashCode() : 0);
-        result = 31 * result + (comment != null ? comment.hashCode() : 0);
-        result = 31 * result + (ua != null ? ua.hashCode() : 0);
-        result = 31 * result + (time != null ? time.hashCode() : 0);
-        result = 31 * result + userId;
-        result = 31 * result + (toCommentId != null ? toCommentId.hashCode() : 0);
-        return result;
+        return Objects.hash(commentId, nickname, email, website, comment, ua, time);
     }
 
-    @ManyToOne
-    @JoinColumn(name = "UserId", referencedColumnName = "UserId", nullable = false, updatable = false, insertable = false)
-    public UsersEntity getUsersByUserId() {
-        return usersByUserId;
-    }
-
-    public void setUsersByUserId(UsersEntity usersByUserId) {
-        this.usersByUserId = usersByUserId;
-    }
 }

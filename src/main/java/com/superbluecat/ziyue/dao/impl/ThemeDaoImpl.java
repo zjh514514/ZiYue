@@ -30,6 +30,17 @@ public class ThemeDaoImpl extends HibernateTools implements ThemeDao {
     @Override
     public List getTheme() {
         hql = "FROM ThemeEntity ";
-        return getSession().createQuery(hql).getResultList();
+        return getSession().createQuery(hql).list();
+    }
+
+    @Override
+    public ThemeEntity getOne(Integer id) {
+        hql = "FROM ThemeEntity t WHERE t.id = ?";
+        List list = getSession().createQuery(hql).setParameter(0, id).list();
+        if (list.size() > 0) {
+            return (ThemeEntity) list.get(0);
+        } else {
+            return null;
+        }
     }
 }

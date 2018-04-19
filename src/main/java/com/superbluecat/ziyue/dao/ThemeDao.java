@@ -13,4 +13,6 @@ public interface ThemeDao {
     void delete(Integer id);
 
     List getTheme();
+
+    ThemeEntity getOne(Integer id);
 }

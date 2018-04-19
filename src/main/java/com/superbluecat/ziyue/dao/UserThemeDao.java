@@ -13,4 +13,6 @@ public interface UserThemeDao {
     void delete(Integer id);
 
     List getUserThemes(Integer userId);
+
+    void setIsUse(Integer userId, byte isUse);
 }

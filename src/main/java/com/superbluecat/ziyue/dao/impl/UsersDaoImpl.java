@@ -40,4 +40,10 @@ public class UsersDaoImpl extends HibernateTools implements UsersDao {
             return null;
         }
     }
+
+    @Override
+    public Integer usernameNum(String username) {
+        hql = "SELECT count(*) FROM UsersEntity u WHERE u.username = ?";
+        return ((Number) getSession().createQuery(hql).setParameter(0, username).uniqueResult()).intValue();
+    }
 }

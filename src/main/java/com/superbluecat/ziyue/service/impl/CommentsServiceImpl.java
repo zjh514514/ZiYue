@@ -6,6 +6,7 @@ import com.superbluecat.ziyue.entities.CommentsEntity;
 import com.superbluecat.ziyue.entities.UsersEntity;
 import com.superbluecat.ziyue.service.CommentsService;
 import com.superbluecat.ziyue.tools.HibernateTools;
+import com.superbluecat.ziyue.tools.Sha256;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,58 +28,71 @@ public class CommentsServiceImpl extends HibernateTools implements CommentsServi
     }
 
     @Override
-    public Boolean save(String apiKey, String comment, String email, String nickName, Integer toCommentId, String ua, String website) {
+    public Boolean save(String username, String password, String apiKey, String comment, String email, String nickName, Integer toCommentId, String ua, String website) {
         UsersEntity usersEntity = usersDao.get(apiKey);
         Date date = new Date();
-        boolean judge = (usersEntity == null) || (usersEntity.getIsMonth() == 1 && usersEntity.getPayTime().compareTo(date) < 0) || (usersEntity.getIsMonth() == 0 && usersEntity.getCommentsLeft() < 0);
+        boolean judge = check(username, password, apiKey) || (usersEntity.getIsMonth() == 1 && usersEntity.getPayTime().compareTo(date) > 0) || (usersEntity.getIsMonth() == 0 && usersEntity.getCommentsLeft() > 0);
         if (judge) {
-            return false;
+            CommentsEntity commentsEntity = new CommentsEntity();
+            commentsEntity.setComment(comment);
+            commentsEntity.setEmail(email);
+            commentsEntity.setNickname(nickName);
+            commentsEntity.setTime(new Timestamp(date.getTime()));
+            commentsEntity.setToCommentId(toCommentId);
+            commentsEntity.setUa(ua);
+            commentsEntity.setWebsite(website);
+            commentsEntity.setUserId(usersEntity.getUserId());
+            if (usersEntity.getIsMonth() == 0) {
+                usersEntity.setCommentsLeft(usersEntity.getCommentsLeft() - 1);
+                usersDao.update(usersEntity);
+            }
+            return commentsDao.save(commentsEntity) > 0;
         }
-        CommentsEntity commentsEntity = new CommentsEntity();
-        commentsEntity.setComment(comment);
-        commentsEntity.setEmail(email);
-        commentsEntity.setNickname(nickName);
-        commentsEntity.setTime(new Timestamp(date.getTime()));
-        commentsEntity.setToCommentId(toCommentId);
-        commentsEntity.setUa(ua);
-        commentsEntity.setWebsite(website);
-        commentsEntity.setUserId(usersEntity.getUserId());
-        if (usersEntity.getIsMonth() == 0) {
-            usersEntity.setCommentsLeft(usersEntity.getCommentsLeft() - 1);
-            usersDao.update(usersEntity);
-        }
-        return commentsDao.save(commentsEntity) > 0;
+        return false;
     }
 
     @Override
-    public Boolean delete(String apiKey, Integer id) {
-        UsersEntity usersEntity = usersDao.get(apiKey);
+    public Boolean delete(String username, String password, String apiKey, Integer id) {
+        if (check(username, password, apiKey)) {
+            CommentsEntity commentsEntity = commentsDao.getOne(id);
+            UsersEntity usersEntity = usersDao.get(apiKey);
+            if (commentsEntity != null && usersEntity.getUserId() == commentsEntity.getUserId()) {
+                commentsDao.delete(id);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public Boolean update(Integer id, String comment, String email, String website) {
         CommentsEntity commentsEntity = commentsDao.getOne(id);
-        if (usersEntity.getUserId() == commentsEntity.getUserId()) {
-            commentsDao.delete(id);
+        if (commentsEntity != null) {
+            commentsEntity.setWebsite(website);
+            commentsEntity.setComment(comment);
+            commentsEntity.setEmail(email);
+            commentsDao.update(commentsEntity);
             return true;
         }
         return false;
     }
 
     @Override
-    public Boolean update(Integer id, String comment, String email, String nickName, Integer toCommentId, String ua, String website) {
-        CommentsEntity commentsEntity = commentsDao.getOne(id);
-        commentsEntity.setWebsite(website);
-        commentsEntity.setComment(comment);
-        commentsEntity.setEmail(email);
-        commentsDao.update(commentsEntity);
-        return true;
-    }
-
-    @Override
-    public List get(String apiKey) {
+    public List get(String username, String password, String apiKey) {
         UsersEntity usersEntity = usersDao.get(apiKey);
         Date date = new Date();
-        boolean judge = (usersEntity.getIsMonth() == 1 && usersEntity.getPayTime().compareTo(date) < 0) || (usersEntity.getIsMonth() == 0 && usersEntity.getCommentsLeft() < 0);
+        boolean judge = check(username, password, apiKey) || (usersEntity.getIsMonth() == 1 && usersEntity.getPayTime().compareTo(date) > 0) || (usersEntity.getIsMonth() == 0 && usersEntity.getCommentsLeft() > 0);
         if (judge) {
-            return Collections.emptyList();
+            return commentsDao.get(usersEntity.getUserId());
         }
-        return commentsDao.get(usersEntity.getUserId());
+        return Collections.emptyList();
+    }
+
+    private Boolean check(String username, String password, String apiKey) {
+        UsersEntity usersEntity = usersDao.get(apiKey);
+        if (usersEntity != null) {
+            return (usersEntity.getUsername().equals(username) && usersEntity.getPassword().equals(Sha256.getSHA256StrJava(password)));
+        }
+        return false;
     }
 }

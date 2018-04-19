@@ -3,6 +3,7 @@ package com.superbluecat.ziyue.tools;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Random;
 
 /**
  * 密码Sha256加密
@@ -46,5 +47,19 @@ public class Sha256 {
             stringBuffer.append(temp);
         }
         return stringBuffer.toString();
+    }
+
+    /**
+     * 生成随机数
+     */
+    public static String getRandomString(int length) {
+        String str = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        Random random = new Random();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < length; ++i) {
+            int number = random.nextInt(52);
+            sb.append(str.charAt(number));
+        }
+        return sb.toString();
     }
 }

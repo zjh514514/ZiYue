@@ -11,4 +11,6 @@ public interface UsersDao {
     void update(UsersEntity usersEntity);
 
     UsersEntity get(String apiKey);
+
+    Integer usernameNum(String username);
 }

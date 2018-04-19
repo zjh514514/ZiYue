@@ -1,15 +1,15 @@
 package com.superbluecat.ziyue.entities;
 
 import javax.persistence.*;
-import java.util.Collection;
+import java.util.Objects;
 
 @Entity
 @Table(name = "theme", schema = "zy", catalog = "")
 public class ThemeEntity {
     private int themeId;
-    private String themename;
+    private String themeName;
     private double money;
-    private Collection<UserThemeEntity> userThemesByThemeId;
+    private String themename;
 
     @Id
     @Column(name = "ThemeId")
@@ -22,13 +22,13 @@ public class ThemeEntity {
     }
 
     @Basic
-    @Column(name = "Themename")
-    public String getThemename() {
-        return themename;
+    @Column(name = "ThemeName")
+    public String getThemeName() {
+        return themeName;
     }
 
-    public void setThemename(String themename) {
-        this.themename = themename;
+    public void setThemeName(String themeName) {
+        this.themeName = themeName;
     }
 
     @Basic
@@ -45,33 +45,25 @@ public class ThemeEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         ThemeEntity that = (ThemeEntity) o;
-
-        if (themeId != that.themeId) return false;
-        if (Double.compare(that.money, money) != 0) return false;
-        if (themename != null ? !themename.equals(that.themename) : that.themename != null) return false;
-
-        return true;
+        return themeId == that.themeId &&
+                Double.compare(that.money, money) == 0 &&
+                Objects.equals(themeName, that.themeName);
     }
 
     @Override
     public int hashCode() {
-        int result;
-        long temp;
-        result = themeId;
-        result = 31 * result + (themename != null ? themename.hashCode() : 0);
-        temp = Double.doubleToLongBits(money);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        return result;
+
+        return Objects.hash(themeId, themeName, money);
     }
 
-    @OneToMany(mappedBy = "themeByThemeId")
-    public Collection<UserThemeEntity> getUserThemesByThemeId() {
-        return userThemesByThemeId;
+    @Basic
+    @Column(name = "Themename")
+    public String getThemename() {
+        return themename;
     }
 
-    public void setUserThemesByThemeId(Collection<UserThemeEntity> userThemesByThemeId) {
-        this.userThemesByThemeId = userThemesByThemeId;
+    public void setThemename(String themename) {
+        this.themename = themename;
     }
 }
